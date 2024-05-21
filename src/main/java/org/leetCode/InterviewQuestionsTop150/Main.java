@@ -31,6 +31,6 @@ public class Main {
                 steps++;
             }
         }
-        System.out.println("版本V1");
+        System.out.println("版本V2");
     }
 }
