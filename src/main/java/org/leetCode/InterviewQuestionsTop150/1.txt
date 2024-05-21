@@ -28,3 +28,6 @@ WHERE
 	AND cz.rs_flag = 1
 	--出院时间
 	AND va.g_i_code = '26f70d1d00454d2e95920943a5e58142'
+
+
+	我动过这个
