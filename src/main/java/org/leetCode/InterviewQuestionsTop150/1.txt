@@ -1,0 +1,30 @@
+SELECT
+		dp.p_name,dcp.id AS company_patient_id,va.i_value AS leave_hospital_time,dcp.company_name,dp.disease_id
+FROM
+	dot_company_patient dcp
+	INNER JOIN dot_patient dp ON dp.id=dcp.patient_id
+	LEFT JOIN dot_patient_st_yn_cz cz ON cz.company_patient_id=dcp.id AND dp.disease_id='D002'
+	LEFT JOIN dot_template_data_value va ON va.company_patient_id=dcp.id
+WHERE
+	dp.disease_id = 'D002'
+	AND dp.drill_model !=1
+	AND dcp.emer_state = 1
+	AND dp.delete_flag != 1
+	AND dcp.company_type=2
+	AND dcp.company_id IN
+	(
+		WITH RECURSIVE T AS (
+    select * from DOT_company a where id=(
+    select case   when DIRECTLY_ID is null then id else DIRECTLY_ID end from DOT_company where id='0295f8e5d767425aaf3d952ccf0c0c97'
+		)
+    UNION ALL
+    select d.* from DOT_company D , T where d.p_id=T.id
+    )
+    SELECT t.id FROM T INNER JOIN DOT_MAP_DISEASE e ON e.COMPANY_ID=t.id  AND e.disease_id='D002' AND (t.disabled ISNULL OR t.disabled=FALSE) AND c_name NOT LIKE '%服务中心%'
+	)
+	AND dcp.cure_date >= to_timestamp( '2023-01-01', 'YYYY-MM-DD' )
+	AND dcp.cure_date < to_timestamp( '2023-03-22', 'YYYY-MM-DD' )
+  AND dcp.diagnose = 'BC17'
+	AND cz.rs_flag = 1
+	--出院时间
+	AND va.g_i_code = '26f70d1d00454d2e95920943a5e58142'
