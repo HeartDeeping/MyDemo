@@ -31,6 +31,6 @@ public class Main {
                 steps++;
             }
         }
-        System.out.println("别人的提交");
+        System.out.println("别人的提交2");
     }
 }
